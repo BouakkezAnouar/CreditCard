@@ -4,7 +4,8 @@ class FormCard extends Component {
   state = {
     cardNumber: "",
     cardHolder: "",
-    cardDate: ""
+    cardDate: "",
+    codeSecret: ""
   };
   render() {
     return (
@@ -44,7 +45,14 @@ class FormCard extends Component {
             />
           </div>
           <div className="form-group col-md-3">
-            <input type="text" className="form-control" placeholder="CVC" />
+            <input
+              type="text"
+              className="form-control"
+              placeholder="CVC"
+              pattern="[0-9]{1,4}"
+              onInput={this.handleChangeCardCodeSecret.bind(this)}
+              value={this.state.codeSecret}
+            />
           </div>
           <div className="col-md-6">
             <button type="submit" className="btn btn-primary btn-block">
@@ -82,6 +90,15 @@ class FormCard extends Component {
       .substring(0, evt.target.value.toString().length - 1);
     const cardDate = evt.target.validity.valid ? evt.target.value : wrong;
     this.setState({ cardDate });
+  };
+
+  handleChangeCardCodeSecret = evt => {
+    //get the previous correct number
+    const wrong = evt.target.value
+      .toString()
+      .substring(0, evt.target.value.toString().length - 1);
+    const codeSecret = evt.target.validity.valid ? evt.target.value : wrong;
+    this.setState({ codeSecret });
   };
 }
 

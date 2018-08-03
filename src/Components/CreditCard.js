@@ -27,7 +27,7 @@ export class CreditCard extends Component {
   state = {};
   render() {
     return (
-      <div className="CreditCard p-3 col-md-6 m-auto h-50 ">
+      <div className="CreditCard p-3  m-auto col-md-6">
         <div className="master-card-logo-container">
           <img
             className="master-card-logo"
