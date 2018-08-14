@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 
 class FormCard extends Component {
-  state = {
-    cardNumber: "",
-    cardHolder: "",
-    cardDate: "",
-    codeSecret: ""
-  };
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="no-gutters col-md-8 m-auto h-50 pt-5 justify-content-center">
@@ -17,12 +15,27 @@ class FormCard extends Component {
           <div className="form-group col-md-6">
             <input
               type="text"
-              className="form-control"
+              className={"form-control ".concat(
+                this.props.isValidCardNumber === true
+                  ? "is-valid"
+                  : "is-invalid"
+              )}
               placeholder="Card Number"
-              pattern="[0-9]{1,16}"
-              onInput={this.handleChangeCardNumber.bind(this)}
-              value={this.state.cardNumber}
+              pattern="[0-9 ]{1,20}"
+              onChange={this.props.onChangeCardNumber}
+              value={this.props.cardNumber}
             />
+            <div
+              className={
+                this.props.isValidCardNumber
+                  ? "valid-feedback"
+                  : "invalid-feedback"
+              }
+            >
+              {this.props.isValidCardNumber
+                ? "Looks good!"
+                : "must be in this form xxxx-xxxx-xxxx-xxxx"}
+            </div>
           </div>
           <div className="form-group col-md-6">
             <input
@@ -30,8 +43,8 @@ class FormCard extends Component {
               className="form-control"
               placeholder="Card Holder"
               pattern="[a-zA-Z ]{1,30}"
-              onInput={this.handleChangeCardHolder.bind(this)}
-              value={this.state.cardHolder}
+              onChange={this.props.onChangeCardHolder}
+              value={this.props.cardHolder}
             />
           </div>
           <div className="form-group col-md-3">
@@ -40,8 +53,8 @@ class FormCard extends Component {
               className="form-control"
               placeholder="MM/YY"
               pattern="[0-9]{1,4}"
-              onInput={this.handleChangeCardDate.bind(this)}
-              value={this.state.cardDate}
+              onChange={this.props.onChangeCardDate}
+              value={this.props.cardDate}
             />
           </div>
           <div className="form-group col-md-3">
@@ -50,8 +63,8 @@ class FormCard extends Component {
               className="form-control"
               placeholder="CVC"
               pattern="[0-9]{1,4}"
-              onInput={this.handleChangeCardCodeSecret.bind(this)}
-              value={this.state.codeSecret}
+              onChange={this.props.onChangeCardCodeSecret}
+              value={this.props.codeSecret}
             />
           </div>
           <div className="col-md-6">
@@ -63,43 +76,6 @@ class FormCard extends Component {
       </div>
     );
   }
-
-  //verification only number not more than 16
-  handleChangeCardNumber = evt => {
-    //get the previous correct number
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const cardNumber = evt.target.validity.valid ? evt.target.value : wrong;
-    this.setState({ cardNumber });
-  };
-
-  handleChangeCardHolder = evt => {
-    //get the previous correct mot
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const cardHolder = evt.target.validity.valid ? evt.target.value : wrong;
-    this.setState({ cardHolder });
-  };
-
-  handleChangeCardDate = evt => {
-    //get the previous correct number
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const cardDate = evt.target.validity.valid ? evt.target.value : wrong;
-    this.setState({ cardDate });
-  };
-
-  handleChangeCardCodeSecret = evt => {
-    //get the previous correct number
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const codeSecret = evt.target.validity.valid ? evt.target.value : wrong;
-    this.setState({ codeSecret });
-  };
 }
 
 export default FormCard;
