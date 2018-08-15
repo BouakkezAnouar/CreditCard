@@ -40,32 +40,70 @@ class FormCard extends Component {
           <div className="form-group col-md-6">
             <input
               type="text"
-              className="form-control"
+              className={"form-control ".concat(
+                this.props.isValidCardHolder === true
+                  ? "is-valid"
+                  : "is-invalid"
+              )}
               placeholder="Card Holder"
-              pattern="[a-zA-Z ]{1,30}"
               onChange={this.props.onChangeCardHolder}
               value={this.props.cardHolder}
             />
+            <div
+              className={
+                this.props.isValidCardHolder
+                  ? "valid-feedback"
+                  : "invalid-feedback"
+              }
+            >
+              {this.props.isValidCardHolder
+                ? "Looks good!"
+                : "must be only caracters !"}
+            </div>
           </div>
           <div className="form-group col-md-3">
             <input
               type="text"
-              className="form-control"
+              className={"form-control ".concat(
+                this.props.isValidCardDate === true ? "is-valid" : "is-invalid"
+              )}
               placeholder="MM/YY"
-              pattern="[0-9]{1,4}"
               onChange={this.props.onChangeCardDate}
               value={this.props.cardDate}
             />
+            <div
+              className={
+                this.props.isValidCardDate
+                  ? "valid-feedback"
+                  : "invalid-feedback"
+              }
+            >
+              {this.props.isValidCardDate
+                ? "Looks good!"
+                : "must be only numbers !"}
+            </div>
           </div>
           <div className="form-group col-md-3">
             <input
               type="text"
-              className="form-control"
+              className={"form-control ".concat(
+                this.props.isValidCodeSecret ? "is-valid" : "is-invalid"
+              )}
               placeholder="CVC"
-              pattern="[0-9]{1,4}"
               onChange={this.props.onChangeCardCodeSecret}
               value={this.props.codeSecret}
             />
+            <div
+              className={
+                this.props.isValidCodeSecret
+                  ? "valid-feedback"
+                  : "invalid-feedback"
+              }
+            >
+              {this.props.isValidCodeSecret
+                ? "Looks good!"
+                : "must be only numbers !"}
+            </div>
           </div>
           <div className="col-md-6">
             <button type="submit" className="btn btn-primary btn-block">

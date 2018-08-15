@@ -7,13 +7,13 @@ class App extends Component {
     super(props);
     this.state = {
       cardNumber: "9870-1234-5678-6985",
-      cardHolder: "Bouakkez Anouar",
-      cardDate: "",
+      cardHolder: "BOUAKKEZ ANOUAR",
+      cardDate: "MM/YY",
       codeSecret: "",
       isValidCardNumber: true,
       isValidCardHolder: true,
-      isValidCodeSecret: true,
-      isValidCardDate: true
+      isValidCodeSecret: false,
+      isValidCardDate: false
     };
     this.handleChangeCardHolder = this.handleChangeCardHolder.bind(this);
   }
@@ -66,32 +66,59 @@ class App extends Component {
   };
 
   handleChangeCardHolder = evt => {
-    //get the previous correct mot
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const cardHolder = evt.target.validity.valid ? evt.target.value : wrong;
+    //length must be less then 20
+    let cardHolder = evt.target.value;
+    if (cardHolder.length >= 20) return;
+    //accept only alphabets => not let user type anything not a number
+    cardHolder = cardHolder.replace(/[^a-zA-Z ]/g, "").toUpperCase();
+    // automatic insert "-" after 4 caracteres
 
-    this.setState({ cardHolder });
+    this.setState({
+      cardHolder,
+      //test with regex contains only uppercase and espace
+      isValidCardHolder: RegExp("[A-Z ]{20}").test(cardHolder)
+    });
   };
 
   handleChangeCardDate = evt => {
-    //get the previous correct number
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const cardDate = evt.target.validity.valid ? evt.target.value : wrong;
-    this.setState({ cardDate });
+    //length must be less then 5
+    let cardDate = evt.target.value;
+    if (cardDate.length >= 6) return;
+    //accept only date => not let user type anything not a number
+    cardDate = cardDate.replace(/[^0-9]/g, "");
+    // automatic insert "/" after 2 numbers
+
+    let testMois =
+      cardDate.substr(0, 2) > 0 && cardDate.substr(0, 2) <= 12 ? true : false;
+    let testAnnee =
+      cardDate.substr(2) >= 18 && cardDate.substr(2) <= 25 ? true : false;
+
+    console.log(cardDate);
+    if (cardDate.length >= 3) {
+      cardDate = cardDate.substr(0, 2) + "/" + cardDate.substr(2);
+    }
+
+    let testRegex = RegExp("[0-9/]{5}").test(cardDate);
+
+    this.setState({
+      cardDate,
+      //test with regex contains only Dates and "-"
+      isValidCardDate: testMois && testAnnee && testRegex
+    });
   };
 
   handleChangeCardCodeSecret = evt => {
-    //get the previous correct number
-    const wrong = evt.target.value
-      .toString()
-      .substring(0, evt.target.value.toString().length - 1);
-    const codeSecret = evt.target.validity.valid ? evt.target.value : wrong;
-    this.setState({ codeSecret });
+    //length must be less then 5
+    let codeSecret = evt.target.value;
+    if (codeSecret.length >= 5) return;
+    //accept only numbers
+    codeSecret = codeSecret.replace(/[^0-9]/g, "");
+
+    this.setState({
+      codeSecret,
+      //test with regex contains only 4 numbers
+      isValidCodeSecret: RegExp("[0-9]{4}").test(codeSecret)
+    });
   };
 }
-
 export default App;
